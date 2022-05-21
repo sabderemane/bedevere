@@ -21,7 +21,6 @@ see devguide.python.org for further instruction as needed."""
 async def close_invalid_pr(gh, *args, **kwargs):
     """Close the invalid PR, add 'invalid' label, and post a message.
 
-    PR is considered invalid if:
     * base_label is 'python:main'
     * head_label is '<username>:<maint_branch>'
     """
