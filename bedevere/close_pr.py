@@ -31,7 +31,7 @@ async def close_invalid_pr(gh, *args, **kwargs):
         base_label = event["pull_request"]["base"]["label"]
 
     if PYTHON_MAINT_BRANCH_RE.match(head_label) and \
-        base_label == "python:main":
+        base_label == "sabderemane:test":
         data = {'state': 'closed'}
         await gh.patch(event["pull_request"]["url"], data=data)
         await gh.post(
