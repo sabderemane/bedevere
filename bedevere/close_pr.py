@@ -29,7 +29,7 @@ async def close_invalid_pr(gh, *args, **kwargs):
         head_label = event["pull_request"]["head"]["label"]
         base_label = event["pull_request"]["base"]["label"]
         print('head',head_label)
-        print(base_label)
+        print('base',base_label)
     print(PYTHON_MAINT_BRANCH_RE.match(head_label))
 
     if PYTHON_MAINT_BRANCH_RE.match(head_label) and \
