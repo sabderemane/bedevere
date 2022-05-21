@@ -28,6 +28,8 @@ async def close_invalid_pr(gh, *args, **kwargs):
         event = json.load(f)
         head_label = event["pull_request"]["head"]["label"]
         base_label = event["pull_request"]["base"]["label"]
+        print('head',head_label)
+        print(base_label)
 
     if PYTHON_MAINT_BRANCH_RE.match(head_label) and \
         base_label == "sabderemane:main":
