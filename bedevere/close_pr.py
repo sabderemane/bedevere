@@ -30,9 +30,11 @@ async def close_invalid_pr(gh, *args, **kwargs):
         base_label = event["pull_request"]["base"]["label"]
         print('head',head_label)
         print(base_label)
+    print(PYTHON_MAINT_BRANCH_RE.match(head_label))
 
     if PYTHON_MAINT_BRANCH_RE.match(head_label) and \
         base_label == "sabderemane:main":
+        print('yay')
         data = {'state': 'closed'}
         await gh.patch(event["pull_request"]["url"], data=data)
         await gh.post(
@@ -43,6 +45,8 @@ async def close_invalid_pr(gh, *args, **kwargs):
             f'{event["pull_request"]["issue_url"]}/comments',
             data={'body': INVALID_PR_COMMENT}
         )
+    else:
+        print('nope')
 
 async def main():
     try:
