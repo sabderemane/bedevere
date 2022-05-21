@@ -14,14 +14,14 @@ create_status = functools.partial(util.create_status, 'bedevere/maintenance-bran
 
 
 TITLE_RE = re.compile(r'\s*\[(?P<branch>\d+\.\d+)\].+\((?:GH-|#)(?P<pr>\d+)\)')
-MAINTENANCE_BRANCH_TITLE_RE = re.compile(r'\s*\[(?P<branch>\d+\.\d+)\].+')
-MAINTENANCE_BRANCH_RE = re.compile(r'\s*(?P<branch>\d+\.\d+)')
+
 BACKPORT_LABEL = 'needs backport to {branch}'
 MESSAGE_TEMPLATE = ('[GH-{pr}](https://github.com/python/cpython/pull/{pr}) is '
                     'a backport of this pull request to the '
                     '[{branch} branch](https://github.com/python/cpython/tree/{branch}).')
 
 BACKPORT_TITLE_DEVGUIDE_URL = "https://devguide.python.org/committing/#backport-pr-title"
+
 
 async def issue_for_PR(gh, pull_request):
     """Get the issue data for a pull request."""
@@ -31,7 +31,7 @@ async def _copy_over_labels(gh, original_issue, backport_issue):
     """Copy over relevant labels from the original PR to the backport PR."""
     label_prefixes = "skip", "type", "sprint"
     labels = list(filter(lambda x: x.startswith(label_prefixes),
-                    util.labels(original_issue)))
+                    util.labels_(original_issue)))
     if labels:
         response = await gh.post(backport_issue["labels_url"], data=labels)
         return response
@@ -45,7 +45,7 @@ async def _remove_backport_label(gh, original_issue, branch, backport_pr_number)
     Also leave a comment on the original PR referencing the backport PR.
     """
     backport_label = BACKPORT_LABEL.format(branch=branch)
-    if backport_label not in util.labels(original_issue):
+    if backport_label not in util.labels_(original_issue):
         return
     await gh.delete(original_issue['labels_url'], {'name': backport_label})
     message = MESSAGE_TEMPLATE.format(branch=branch, pr=backport_pr_number)

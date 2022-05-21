@@ -4,10 +4,7 @@ name: backport
 
 on:
   pull_request:
-    types: [opened, reopened, edited]
-
-env:
-  GH_AUTH: ${{ secrets.GH_AUTH }}
+    types: [opened, reopened, edited, synchronize]
 
 
 jobs:
@@ -38,5 +35,5 @@ jobs:
           python-version: ${{ matrix.python-version }}
       - name: Install Dependencies
         run: python3 -m pip install coverage -U pip -r dev-requirements.txt
-      - name: Run code
-        run: python3 -m bedevere.backport
+      # - name: Run code
+      #   run: python3 -m bedevere backport.py validate_maintenance_branch_pr
